@@ -50,6 +50,10 @@
   --font-decorative: 'Something Good', 'Comic Sans MS', sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-primary);
   background-color: var(--bg-brand);
@@ -61,7 +65,10 @@ body {
 /* Typography Classes */
 .font-decorative {
   font-family: var(--font-decorative);
+  font-weight: normal !important;
 }
+
+
 
 /* Boutique Buttons */
 .btn {
@@ -141,6 +148,61 @@ body {
 .hero-section {
   background-color: var(--bg-brand);
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 130px; /* Space for the floating header logo on mobile */
+  padding-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding-top: 160px;
+    padding-bottom: 80px;
+  }
+}
+
+.hero-title {
+  font-size: 2rem;
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+}
+
+.btn-hero {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  white-space: normal;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .btn-hero {
+    font-size: 1.25rem;
+    padding: 1rem 3rem;
+  }
 }
 
 .hero-section::before {
