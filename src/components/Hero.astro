@@ -1,13 +1,51 @@
-<section id="hero" class="hero-section d-flex align-items-center justify-content-center text-center position-relative">
+<section id="hero" class="hero-section d-flex align-items-center position-relative overflow-hidden">
+    <!-- Right side image for desktop -->
+    <div class="position-absolute top-0 bottom-0 end-0 w-50 d-none d-lg-block">
+        <img src="/assets/img/perro_shiba.jpeg" alt="Perro feliz en Bark & Co." class="hero-dog-img-split" />
+    </div>
+
     <div class="container position-relative z-1 px-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-xl-9">
-                <h1 class="hero-title mb-4 lh-sm font-decorative text-center text-gradient">Sus vacaciones soñadas en el mejor Hospedaje Canino en San Pedro</h1>
-                <p class="lead mb-5 fs-4 text-center" style="color: var(--primary-color);">Reserva hoy su lugar en Bark & Co., el primer Centro de Bienestar Canino Fear Free en San Pedro.<br>¡Cupos limitados para este verano!</p>
-                <div class="d-flex justify-content-center">
-                    <a href="#booking" class="btn btn-accent-green btn-hero fw-bold shadow-sm">Reserva tu lugar este verano →</a>
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-center text-lg-start pe-lg-5">
+                <h1 class="hero-title mb-4 lh-sm font-decorative text-gradient">Hospedaje Canino en San Pedro</h1>
+                <p class="lead mb-4 fs-4" style="color: var(--primary-color);">Tus vacaciones empiezan cuando dejas a tu perro con nosotros.<br class="d-none d-md-inline" />Las de tu perro, cuando entra a Bark & Co.</p>
+                <p class="lead my-5 fs-4" style="color: var(--primary-color);">¡Cupos limitados para este verano!</p>
+                <div class="d-flex justify-content-center justify-content-lg-start">
+                    <a href="#booking" class="btn btn-accent-green btn-hero fw-bold shadow-sm">Reserva su lugar para verano →</a>
                 </div>
+            </div>
+
+            <!-- Mobile dog image -->
+            <div class="col-12 text-center mt-5 d-lg-none">
+                <img src="/assets/img/perro_shiba.jpeg" alt="Perro feliz en Bark & Co." class="img-fluid rounded-4 shadow-sm hero-dog-img-mobile" />
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    .hero-section::before {
+        display: none !important;
+    }
+    .hero-section {
+        padding-top: 95px !important; /* Espacio para barra de navegación en móviles */
+        padding-bottom: 60px !important;
+        min-height: 100vh;
+    }
+    @media (min-width: 992px) {
+        .hero-section {
+            padding-top: 110px !important; /* Espacio para barra de navegación en desktop */
+            padding-bottom: 80px !important;
+        }
+    }
+    .hero-dog-img-split {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .hero-dog-img-mobile {
+        max-width: 100%;
+        max-height: 350px;
+        object-fit: cover;
+    }
+</style>

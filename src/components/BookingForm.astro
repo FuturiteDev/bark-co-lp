@@ -1,49 +1,72 @@
 ---
+
 ---
-<section id="booking" class="py-5" style="background-color: var(--white); margin-top: -60px; position: relative; z-index: 10;">
+
+<section id="booking" class="py-5" style="background-color: var(--bg-brand); margin-top: -60px; position: relative; z-index: 10;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 <div class="card border-0 shadow-lg" style="border-radius: 1.5rem; overflow: hidden;">
                     <div class="card-body p-4 p-md-5 bg-white">
-                        <h3 class="text-center fw-bold mb-4" style="color: var(--primary-color); font-size: 2.5rem;">Planea su estancia ideal</h3>
+                        <h3 class="text-center fw-bold mb-4" style="color: var(--primary-color); font-size: 2.5rem;">Empecemos a planear sus vacaciones</h3>
                         <form id="realBookingForm" class="booking-form">
-                            <input type="hidden" name="servicio" value="Hospedaje">
+                            <input type="hidden" name="servicio" value="Hospedaje" />
 
                             <!-- Sección 1: Fechas -->
                             <div class="row mb-4 pb-2 border-bottom">
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="fecha-entrada" class="form-label fw-semibold" style="color: var(--secondary-color);">1. Fecha de entrada</label>
-                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-entrada" name="fecha_entrada">
+                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-entrada" name="fecha_entrada" />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="fecha-salida" class="form-label fw-semibold" style="color: var(--secondary-color);">Fecha de salida</label>
-                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-salida" name="fecha_salida">
+                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-salida" name="fecha_salida" />
                                 </div>
                             </div>
 
-                            <!-- Sección 2: Datos de Contacto -->
+                            <!-- Sección 2: Datos de tus perros -->
+                            <div class="row mb-4 pb-2 border-bottom">
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <label for="cantidad-perros" class="form-label fw-semibold" style="color: var(--secondary-color);">2. ¿Cuántos perros tienes?</label>
+                                    <select class="form-select rounded-pill px-4 py-2 bg-light border-0" id="cantidad-perros" name="cantidad_perros" required style="height: 50px;">
+                                        <option value="" disabled selected>Selecciona cantidad</option>
+                                        <option value="1">1 perro</option>
+                                        <option value="2">2 perros</option>
+                                        <option value="3">3 perros</option>
+                                        <option value="4+">4 o más perros</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="detalles-perros" class="form-label fw-semibold" style="color: var(--secondary-color);">Cuéntanos sobre tu(s) perro(s): nombre(s), tamaño(s)</label>
+                                    <textarea class="form-control rounded-4 px-4 py-2 bg-light border-0" id="detalles-perros" name="detalles_perros" rows="2" placeholder="Ej. Toby (Mediano), Luna (Chica)..." required style="min-height: 50px;"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Sección 3: Datos de Contacto -->
                             <div class="mb-4">
-                                <label class="form-label fw-semibold mb-3" style="color: var(--secondary-color);">2. Tus datos de contacto</label>
+                                <label class="form-label fw-semibold mb-3" style="color: var(--secondary-color);">3. Tus datos de contacto</label>
                                 <div class="row g-3">
                                     <div class="col-md-12 mb-2">
-                                        <input type="text" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Nombre completo" name="nombre" required>
+                                        <input type="text" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Nombre completo" name="nombre" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="tel" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Teléfono" name="telefono" required>
+                                        <input type="tel" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Teléfono" name="telefono" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="email" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Correo electrónico" name="correo" required>
+                                        <input type="email" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Correo electrónico" name="correo" required />
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Botón de acción -->
                             <div class="text-center mt-5">
-                                <button type="submit" class="btn btn-accent-green btn-lg px-5 py-3 w-100 fs-5 fw-bold shadow-sm">Quiero apartar mi lugar</button>
-                                <p class="text-center text-muted small mt-3 mb-0">Te contactaremos por WhatsApp en menos de 24 horas para coordinar los detalles.</p>
+                                <div class="form-check form-switch d-inline-flex align-items-center mb-3 text-start">
+                                    <input class="form-check-input custom-switch" type="checkbox" role="switch" id="experienciaCompleta" name="experiencia_completa" checked style="cursor: pointer; width: 2.2em; height: 1.1em;" />
+                                    <label class="form-check-label fs-6 fw-semibold ms-2" for="experienciaCompleta" style="color: var(--primary-color); cursor: pointer;">Quiero reservar la experiencia completa de Bark & Co.</label>
+                                </div>
+                                <button type="submit" class="btn btn-accent-green btn-lg px-5 py-3 w-100 fs-5 fw-bold shadow-sm">Me interesa reservar</button>
+                                <p class="text-center text-muted small mt-3 mb-0">Te contactaremos personalmente en menos de 24 horas para validar la disponibilidad de acuerdo a tus necesidades y coordinar todos los detalles.</p>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -53,65 +76,72 @@
 </section>
 
 <script is:inline>
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.getElementById('realBookingForm');
-        console.log("Script de reserva cargado. Formulario:", form);
-        
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('realBookingForm')
+        console.log('Script de reserva cargado. Formulario:', form)
+
         if (form) {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData.entries());
-                
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault()
+
+                const formData = new FormData(form)
+                const data = Object.fromEntries(formData.entries())
+
                 // Validación básica de fechas
                 if (!data.fecha_entrada || !data.fecha_salida) {
-                    alert('Por favor, indica las fechas de entrada y salida para apartar tu lugar.');
-                    return;
+                    alert('Por favor, indica las fechas de entrada y salida para apartar tu lugar.')
+                    return
                 }
-                
+
                 if (new Date(data.fecha_salida) < new Date(data.fecha_entrada)) {
-                    alert('La fecha de salida no puede ser anterior a la de entrada.');
-                    return;
+                    alert('La fecha de salida no puede ser anterior a la de entrada.')
+                    return
                 }
-                
-                data.origen = "https://bark-co-lp.vercel.app/";
-                
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn ? btn.textContent : 'Quiero apartar mi lugar';
-                
+
+                data.origen = 'https://bark-co-lp.vercel.app/'
+
+                const btn = form.querySelector('button[type="submit"]')
+                const originalText = btn ? btn.textContent : 'Quiero apartar mi lugar'
+
                 if (btn) {
-                    btn.textContent = 'Enviando...';
-                    btn.disabled = true;
+                    btn.textContent = 'Enviando...'
+                    btn.disabled = true
                 }
 
                 try {
-                    console.log("Datos a enviar (Reserva):", data);
+                    console.log('Datos a enviar (Reserva):', data)
                     const response = await fetch('https://n8n.ongoing.mx/webhook/2dd3eed3-0f4f-41a3-a861-66d2e8265e97', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'barkco': 'Huo0lpaw.'
+                            barkco: 'Huo0lpaw.',
                         },
-                        body: JSON.stringify(data)
-                    });
+                        body: JSON.stringify(data),
+                    })
 
                     if (response.ok) {
-                        alert('¡Solicitud enviada con éxito! Nos comunicaremos contigo pronto para coordinar los detalles.');
-                        form.reset();
+                        alert('¡Solicitud enviada con éxito! Nos comunicaremos contigo pronto para coordinar los detalles.')
+                        form.reset()
                     } else {
-                        alert('Hubo un error al enviar tu solicitud. Código: ' + response.status);
+                        alert('Hubo un error al enviar tu solicitud. Código: ' + response.status)
                     }
                 } catch (error) {
-                    console.error('Error en fetch:', error);
-                    alert('Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message);
+                    console.error('Error en fetch:', error)
+                    alert('Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message)
                 } finally {
                     if (btn) {
-                        btn.textContent = originalText;
-                        btn.disabled = false;
+                        btn.textContent = originalText
+                        btn.disabled = false
                     }
                 }
-            });
+            })
         }
-    });
+    })
 </script>
+
+<style>
+    .custom-switch:checked {
+        background-color: var(--accent-green) !important;
+        border-color: var(--accent-green) !important;
+    }
+</style>

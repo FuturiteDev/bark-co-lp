@@ -1,6 +1,6 @@
 ---
 ---
-<header class="position-absolute w-100 transition-all z-3" id="main-header" style="animation: fadeInDown 0.8s ease-out;">
+<header class="fixed-top bg-white shadow-sm w-100 transition-all" id="main-header" style="animation: fadeInDown 0.8s ease-out; z-index: 1050;">
     <div class="container">
         <style>
             @keyframes fadeInDown {
@@ -8,35 +8,92 @@
                 to { opacity: 1; transform: translateY(0); }
             }
             .brand-logo { 
-                height: 60px; 
+                height: 45px; 
                 width: auto; 
                 transition: transform 0.4s ease, filter 0.4s ease;
-                filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
             }
-            @media (min-width: 768px) {
+            @media (min-width: 992px) {
                 .brand-logo {
-                    height: 90px;
+                    height: 60px;
                 }
             }
             .brand-logo:hover {
                 transform: scale(1.05);
-                filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1));
             }
             #main-navbar {
-                padding-top: 1rem !important;
+                padding-top: 0.5rem !important;
                 padding-bottom: 0.5rem !important;
             }
-            @media (min-width: 768px) {
+            @media (min-width: 992px) {
                 #main-navbar {
-                    padding-top: 2rem !important;
-                    padding-bottom: 1rem !important;
+                    padding-top: 0.75rem !important;
+                    padding-bottom: 0.75rem !important;
                 }
             }
+            .nav-link {
+                color: var(--primary-color) !important;
+                transition: color 0.3s ease;
+            }
+            .nav-link:hover {
+                color: var(--secondary-color) !important;
+            }
+            .nav-btn-booking {
+                font-size: 0.95rem;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+            }
+            .nav-btn-booking:hover {
+                transform: translateY(-2px);
+            }
         </style>
-        <nav class="navbar justify-content-center" id="main-navbar">
-            <a class="navbar-brand p-2 m-0" href="/">
+        <nav class="navbar navbar-expand-lg navbar-light p-0" id="main-navbar">
+            <a class="navbar-brand d-flex align-items-center m-0" href="#hero">
                 <img src="/assets/img/logo_BarknCo.png" alt="Bark & Co." class="brand-logo">
             </a>
+            
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbarCollapse" aria-controls="mainNavbarCollapse" aria-expanded="false" aria-label="Alternar navegación">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbarCollapse">
+                <ul class="navbar-nav align-items-center me-lg-4 mb-3 mb-lg-0 mt-3 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-semibold" href="#hero">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-semibold" href="#servicios">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-semibold" href="#filosofia">Filosofía</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 fw-semibold" href="#faq">Preguntas</a>
+                    </li>
+                </ul>
+                <div class="text-center text-lg-start mb-2 mb-lg-0">
+                    <a href="#booking" class="btn btn-accent-green text-white fw-bold px-4 py-2 shadow-sm nav-btn-booking">Reserva ahora</a>
+                </div>
+            </div>
         </nav>
     </div>
 </header>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navLinks = document.querySelectorAll('#mainNavbarCollapse .nav-link, #mainNavbarCollapse .btn');
+        const menuToggle = document.getElementById('mainNavbarCollapse');
+        if (navLinks && menuToggle) {
+            navLinks.forEach((link) => {
+                link.addEventListener('click', () => {
+                    // Cierra el menú en móviles después de hacer click
+                    if (window.bootstrap && window.bootstrap.Collapse) {
+                        const bsCollapse = window.bootstrap.Collapse.getInstance(menuToggle);
+                        if (bsCollapse) {
+                            bsCollapse.hide();
+                        }
+                    }
+                });
+            });
+        }
+    });
+</script>
