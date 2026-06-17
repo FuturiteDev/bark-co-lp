@@ -50,7 +50,7 @@
                                         <input type="text" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Nombre completo" name="nombre" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="tel" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Celular / WhatsApp" name="telefono" required />
+                                        <input type="tel" id="telefono" class="form-control rounded-pill pe-4 py-3 bg-light border-0" placeholder="Celular / WhatsApp" name="telefono" required />
                                     </div>
                                     <div class="col-md-6">
                                         <input type="email" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Correo electrónico" name="correo" required />
@@ -75,11 +75,48 @@
     </div>
 </section>
 
+<!-- Carga de intl-tel-input CSS/JS y SweetAlert2 desde CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.4/build/css/intlTelInput.min.css" />
+<script is:inline src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.4/build/js/intlTelInput.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('realBookingForm');
         const inputEntrada = document.getElementById('fecha-entrada');
         const inputSalida = document.getElementById('fecha-salida');
+        const inputTelefono = document.getElementById('telefono');
+
+        // Función para mostrar alertas elegantes con SweetAlert2
+        function mostrarAlerta(titulo, mensaje, tipo = 'warning', textoBoton = 'Entendido') {
+            if (window.Swal) {
+                window.Swal.fire({
+                    title: titulo,
+                    text: mensaje,
+                    icon: tipo,
+                    confirmButtonText: textoBoton,
+                    confirmButtonColor: '#4D967C', // Color de marca accent-green
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                        confirmButton: 'custom-swal-btn'
+                    }
+                });
+            } else {
+                alert(mensaje);
+            }
+        }
+
+        // Inicializar intl-tel-input
+        let iti;
+        if (inputTelefono && window.intlTelInput) {
+            iti = window.intlTelInput(inputTelefono, {
+                initialCountry: "mx",
+                onlyCountries: ["mx"],
+                allowDropdown: false,
+                placeholderNumberType: "MOBILE",
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.3.4/build/js/utils.js",
+            });
+        }
 
         // Configuración dinámica de mínimos de fecha para UX
         if (inputEntrada && inputSalida) {
@@ -111,7 +148,7 @@
 
                 // 1. Validación de Fechas
                 if (!data.fecha_entrada || !data.fecha_salida) {
-                    alert('Por favor, indica las fechas de entrada y salida para apartar tu lugar.');
+                    mostrarAlerta('Fechas incompletas', 'Por favor, indica las fechas de entrada y salida para apartar tu lugar.');
                     return;
                 }
 
@@ -119,27 +156,44 @@
                 const fechaSalida = new Date(data.fecha_salida + 'T00:00:00');
 
                 if (fechaSalida <= fechaEntrada) {
-                    alert('La fecha de salida debe ser mayor a la fecha de entrada.');
+                    mostrarAlerta('Fecha inválida', 'La fecha de salida debe ser mayor a la fecha de entrada.');
                     return;
                 }
 
-                // 2. Validación de Celular / WhatsApp (Mínimo 10 dígitos)
-                const telefonoLimpio = data.telefono.replace(/\D/g, '');
-                if (telefonoLimpio.length < 10) {
-                    alert('Por favor, ingresa un número de celular o WhatsApp válido de al menos 10 dígitos.');
-                    return;
+                // 2. Validación de Celular / WhatsApp con intl-tel-input
+                if (iti) {
+                    if (!iti.isValidNumber()) {
+                        mostrarAlerta('Teléfono inválido', 'Por favor, ingresa un número de celular o WhatsApp válido.');
+                        return;
+                    }
+                    // Estandarizar el teléfono al formato internacional (E.164)
+                    data.telefono = iti.getNumber();
+                } else {
+                    const telefonoLimpio = data.telefono.replace(/\D/g, '');
+                    if (telefonoLimpio.length < 10) {
+                        mostrarAlerta('Teléfono inválido', 'Por favor, ingresa un número de celular o WhatsApp válido de al menos 10 dígitos.');
+                        return;
+                    }
                 }
 
                 // 3. Validación de Correo Electrónico
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(data.correo)) {
-                    alert('Por favor, ingresa un correo electrónico válido.');
+                    mostrarAlerta('Correo inválido', 'Por favor, ingresa un correo electrónico válido.');
                     return;
                 }
 
-                data.origen = 'https://bark-co-lp.vercel.app/';
+                data.origen = window.location.origin + window.location.pathname;
+
+                // Capturar y enviar parámetros UTM
+                const urlParams = new URLSearchParams(window.location.search);
+                const utms = ['utm_id', 'utm_campaign', 'utm_source', 'utm_medium', 'utm_content', 'utm_term'];
+                utms.forEach(utm => {
+                    data[utm] = urlParams.get(utm) || '';
+                });
+
                 const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn ? btn.textContent : 'Quiero apartar mi lugar';
+                const originalText = btn ? btn.textContent : 'Quiero reservar';
 
                 if (btn) {
                     btn.textContent = 'Enviando...';
@@ -157,8 +211,11 @@
                     });
 
                     if (response.ok) {
-                        alert('¡Solicitud enviada con éxito! Nos comunicaremos contigo pronto para coordinar los detalles.');
+                        mostrarAlerta('¡Solicitud enviada!', 'Te contactaremos en menos de 24 horas para validar disponibilidad y coordinar todos los detalles de acuerdo a tus necesidades.', 'success', 'Excelente');
                         form.reset();
+                        if (iti) {
+                            iti.setNumber('');
+                        }
                         // Restablecer los mínimos de fecha
                         if (inputEntrada && inputSalida) {
                             const today = new Date().toISOString().split('T')[0];
@@ -166,11 +223,11 @@
                             inputSalida.min = '';
                         }
                     } else {
-                        alert('Hubo un error al enviar tu solicitud. Código: ' + response.status);
+                        mostrarAlerta('Error al enviar', 'Hubo un error al enviar tu solicitud. Código: ' + response.status, 'error');
                     }
                 } catch (error) {
                     console.error('Error en fetch:', error);
-                    alert('Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message);
+                    mostrarAlerta('Error de conexión', 'Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message, 'error');
                 } finally {
                     if (btn) {
                         btn.textContent = originalText;
@@ -194,5 +251,33 @@
         transform: none !important;
         transition: none !important;
         box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; /* Conservar la sombra Bootstrap shadow-lg estática */
+    }
+
+    /* Ajustes para intl-tel-input con Bootstrap 5 */
+    .iti {
+        width: 100%;
+        display: block;
+    }
+    .iti__country-list {
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+    }
+
+    /* SweetAlert2 Custom Styling */
+    .custom-swal-popup {
+        font-family: var(--font-primary, 'Plus Jakarta Sans', sans-serif) !important;
+        border-radius: 1.5rem !important;
+        padding: 2.5rem 1.5rem !important;
+        background-color: var(--white, #FFFFFF) !important;
+    }
+    .custom-swal-btn {
+        border-radius: 50px !important;
+        padding: 0.75rem 2.5rem !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        transition: all 0.2s ease-in-out !important;
+    }
+    .custom-swal-btn:hover {
+        opacity: 0.9 !important;
     }
 </style>
