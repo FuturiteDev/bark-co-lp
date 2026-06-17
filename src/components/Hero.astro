@@ -1,92 +1,224 @@
-<section id="hero" class="hero-section d-flex align-items-center position-relative overflow-hidden">
-    <div class="z-1">
-        <div class="row align-items-center g-4 ms-0">
-            <!-- Left Column: Content -->
-            <div class="col-lg-6 d-flex justify-content-center align-items-center text-center text-lg-start p-0">
-                <div class="hero-content-wrapper py-1 py-lg-4 px-5">
-                    <h1 class="hero-title mb-3 font-decorative text-gradient">HOTEL CANINO FEAR FREE EN SAN PEDRO</h1>
-                    <p class="lead mb-3 fs-5" style="color: var(--primary-color);">Sabemos que te duele dejarlo cuando viajas. En realidad, dejarlo en Bark & Co. es llevarlo de vacaciones.</p>
-                    <p class="lead mb-3 fs-5" style="color: var(--primary-color);">Hotel · Guardería Enriquecida · Training · Grooming & Spa · Boutique</p>
-                    <p class="lead mb-4 fs-5 fw-bold" style="color: var(--primary-color);">¡Gran apertura Julio 2026! Cupos limitados</p>
-                    <div class="d-flex justify-content-center justify-content-lg-start">
-                        <a href="#booking" class="btn btn-accent-green btn-hero fw-bold shadow-sm">Reserva su lugar para este verano</a>
+---
+import { Picture } from 'astro:assets';
+import heroPortada from '../assets/img/hero_portada.jpeg';
+---
+
+<section id="hero" class="hero-section position-relative overflow-hidden d-flex align-items-center">
+    <!-- Imagen de fondo optimizada usando Astro Picture -->
+    <div class="hero-bg-wrapper position-absolute top-0 start-0 w-100 h-100 z-0">
+        <Picture
+            src={heroPortada}
+            formats={['avif', 'webp']}
+            fallbackFormat="jpeg"
+            alt="Lobby y recepción de Bark & Co."
+            class="hero-bg-img w-100 h-100"
+            pictureAttributes={{ class: "w-100 h-100" }}
+            loading="eager"
+            fetchpriority="high"
+        />
+        <!-- Superposición sutil para asegurar legibilidad -->
+        <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+    </div>
+
+    <!-- Contenido del Hero -->
+    <div class="container position-relative z-1 py-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="hero-content text-start px-2 px-md-3">
+                    <p class="hero-pretitle text-uppercase fw-semibold mb-3">
+                        Hotel canino en San Pedro
+                    </p>
+                    <h1 class="hero-headline fw-bold mb-4 text-dark">
+                        Sabemos que te duele dejarlo cuando viajas.<br class="d-none d-md-inline" />
+                        En realidad, dejarlo en Bark & Co. es llevarlo de vacaciones.
+                    </h1>
+                    <p class="hero-features mb-3">
+                        Indoor Park &bull; Webcam &bull; Supervisión 24/7 &bull; Veterinario in-house
+                    </p>
+                    <p class="hero-callout fw-bold mb-4 mt-5">
+                        ¡Gran apertura Julio 2026! Cupos limitados
+                    </p>
+                    <div class="hero-cta-outer-pill animate-pulse">
+                        <a href="#booking" class="btn btn-accent-green btn-hero fw-bold">
+                            Reserva su lugar para este verano
+                        </a>
                     </div>
                 </div>
-            </div>
-
-            <!-- Right Column: Image (Desktop & Mobile unified) -->
-            <div class="col-lg-6 p-0 m-0">
-                <img src="/assets/img/hero_perro.jpeg" alt="Perro feliz en Bark & Co." class="hero-dog-img" />
             </div>
         </div>
     </div>
 </section>
 
 <style>
-    .hero-section::before {
-        display: none !important;
-    }
     .hero-section {
-        padding-top: 80px !important; /* Reducido para eliminar espacio excesivo */
-        padding-bottom: 60px !important;
         min-height: 100vh;
-    }
-    @media (min-width: 992px) {
-        .hero-section {
-            padding-top: 80px !important; /* Reducido para eliminar espacio excesivo */
-            padding-bottom: 80px !important;
-        }
-    }
-    .hero-dog-img {
-        width: 100%;
-        height: auto;
-        /* aspect-ratio: 4 / 3; */
-        object-fit: cover;
-        padding-top: 20px !important;
-    }
-    @media (min-width: 992px) {
-        .hero-dog-img {
-            padding-top: 0px !important;
-        }
-    }
-    .hero-content-wrapper {
-        width: 100%;
+        padding-top: 100px; /* Espacio para el header fijo */
+        padding-bottom: 60px;
+        background-color: var(--bg-brand);
     }
 
-    .hero-title {
-        line-height: 0.95 !important;
-        font-size: 3.4rem !important;
+    @media (min-width: 992px) {
+        .hero-section {
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+    }
+
+    /* Envoltura y ajuste de imagen de fondo */
+    .hero-bg-wrapper {
+        pointer-events: none;
+    }
+    
+    .hero-bg-img {
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Degradado lineal para legibilidad */
+    .hero-overlay {
+        background: linear-gradient(90deg, 
+            rgba(242, 235, 229, 0.95) 0%, 
+            rgba(242, 235, 229, 0.85) 45%, 
+            rgba(242, 235, 229, 0.3) 100%
+        );
+    }
+
+    @media (max-width: 991.98px) {
+        .hero-overlay {
+            /* Overlay más opaco en pantallas pequeñas para asegurar contraste */
+            background: rgba(242, 235, 229, 0.88);
+        }
+        .hero-content {
+            text-align: center !important;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    /* Tipografía y textos del Hero */
+    .hero-pretitle {
+        font-size: 1.5rem;
+        letter-spacing: 1.5px;
+        color: var(--primary-color);
+        font-weight: 700;
+        opacity: 0.9;
+    }
+
+    .hero-headline {
+        font-size: 1.8rem;
+        line-height: 1.25;
+        color: var(--primary-color) !important;
         font-weight: 800 !important;
     }
+
     @media (min-width: 576px) {
-        .hero-title {
-            font-size: 4.2rem !important;
+        .hero-headline {
+            font-size: 2.2rem;
         }
     }
+
     @media (min-width: 768px) {
-        .hero-title {
-            font-size: 5.2rem !important;
+        .hero-headline {
+            font-size: 2.5rem;
         }
     }
+
     @media (min-width: 992px) {
-        .hero-title {
-            font-size: 5.8rem !important;
+        .hero-headline {
+            font-size: 2.7rem;
+            line-height: 1.2;
         }
     }
-    @media (min-width: 1700px) {
-        .hero-title {
-            font-size: 6.8rem !important;
+
+    @media (min-width: 1200px) {
+        .hero-headline {
+            font-size: 3rem;
+            line-height: 1.15;
         }
+    }
+
+    @media (min-width: 1400px) {
+        .hero-section .container {
+            max-width: 80% !important;
+        }
+        .hero-headline {
+            font-size: 3rem;
+        }
+    }
+
+    .hero-features {
+        font-size: 1rem;
+        color: var(--primary-color);
+        font-weight: 500;
+        opacity: 0.85;
+    }
+
+    @media (min-width: 768px) {
+        .hero-features {
+            font-size: 1.15rem;
+        }
+    }
+
+    .hero-callout {
+        font-size: 1.05rem;
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    /* Botón de doble píldora (CTA) */
+    .hero-cta-outer-pill {
+        display: inline-block;
+        padding: 5px;
+        background: rgba(242, 235, 229, 0.65);
+        border: 2px solid rgba(255, 255, 255, 0.85);
+        border-radius: 50px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hero-cta-outer-pill:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(77, 150, 124, 0.15);
     }
 
     .btn-hero {
-        font-size: 0.85rem !important;
-        padding: 0.5rem 1.1rem !important;
+        background-color: var(--accent-green) !important;
+        color: var(--white) !important;
+        border: none !important;
+        border-radius: 50px !important;
+        padding: 0.75rem 1.8rem !important;
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+        display: inline-block;
+        letter-spacing: 0.5px;
+        transition: background-color 0.3s ease !important;
     }
+
     @media (min-width: 768px) {
         .btn-hero {
-            font-size: 1rem !important;
-            padding: 0.8rem 1.6rem !important;
+            padding: 0.9rem 2.4rem !important;
+            font-size: 1.05rem !important;
         }
+    }
+
+    .btn-hero:hover {
+        background-color: #3b7561 !important; /* Tono de verde más oscuro */
+    }
+
+    /* Micro-animación sutil para el CTA */
+    @keyframes pulse-subtle {
+        0%, 100% {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+        50% {
+            box-shadow: 0 8px 30px rgba(77, 150, 124, 0.15);
+        }
+    }
+
+    .animate-pulse {
+        animation: pulse-subtle 3s infinite ease-in-out;
     }
 </style>
