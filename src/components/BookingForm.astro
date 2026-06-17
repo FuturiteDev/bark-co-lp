@@ -201,7 +201,7 @@
                 }
 
                 try {
-                    const response = await fetch('https://n8n.ongoing.mx/webhook/2dd3eed3-0f4f-41a3-a861-66d2e8265e97', {
+                    const response = await fetch('https://n8n.ongoing.mx/webhook-test/2dd3eed3-0f4f-41a3-a861-66d2e8265e97', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -223,11 +223,12 @@
                             inputSalida.min = '';
                         }
                     } else {
-                        mostrarAlerta('Error al enviar', 'Hubo un error al enviar tu solicitud. Código: ' + response.status, 'error');
+                        console.error('Error de respuesta del servidor:', response.status);
+                        mostrarAlerta('Error de envío', 'Lo sentimos, tuvimos un problema al procesar tu solicitud. Por favor, intenta de nuevo más tarde.', 'error');
                     }
                 } catch (error) {
-                    console.error('Error en fetch:', error);
-                    mostrarAlerta('Error de conexión', 'Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message, 'error');
+                    console.error('Error de conexión en fetch:', error);
+                    mostrarAlerta('Problema de conexión', 'No pudimos conectar con el servidor. Por favor, verifica tu conexión a internet o intenta de nuevo en unos momentos.', 'error');
                 } finally {
                     if (btn) {
                         btn.textContent = originalText;
