@@ -16,11 +16,11 @@
                             <div class="row mb-4 pb-2 border-bottom">
                                 <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="fecha-entrada" class="form-label fw-semibold" style="color: var(--secondary-color);">1. Fecha de entrada</label>
-                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-entrada" name="fecha_entrada" />
+                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-entrada" name="fecha_entrada" required />
                                 </div>
                                 <div class="col-md-6">
                                     <label for="fecha-salida" class="form-label fw-semibold" style="color: var(--secondary-color);">Fecha de salida</label>
-                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-salida" name="fecha_salida" />
+                                    <input type="date" class="form-control rounded-pill px-4 py-2 bg-light border-0" id="fecha-salida" name="fecha_salida" required />
                                 </div>
                             </div>
 
@@ -30,15 +30,15 @@
                                     <label for="cantidad-perros" class="form-label fw-semibold" style="color: var(--secondary-color);">2. ¿Cuántos perros quieres hospedar?</label>
                                     <select class="form-select rounded-pill px-4 py-2 bg-light border-0" id="cantidad-perros" name="cantidad_perros" required style="height: 50px;">
                                         <option value="" disabled selected>Selecciona cantidad</option>
-                                        <option value="1">1 perro</option>
-                                        <option value="2">2 perros</option>
-                                        <option value="3">3 perros</option>
-                                        <option value="4+">4 o más perros</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4+">4 o más</option>
                                     </select>
                                 </div>
                                 <div class="col-12 mb-3">
-                                    <label for="detalles-perros" class="form-label fw-semibold" style="color: var(--secondary-color);">Cuéntanos sobre tu(s) perro(s): nombre(s), tamaño(s)</label>
-                                    <textarea class="form-control rounded-4 px-4 py-2 bg-light border-0" id="detalles-perros" name="detalles_perros" rows="2" placeholder="Ej. Toby (Mediano), Luna (Chica)..." required style="min-height: 50px;"></textarea>
+                                    <label for="detalles-perros" class="form-label fw-semibold" style="color: var(--secondary-color);">Cuéntanos sobre tu(s) perro(s): nombre, raza, tamaño. Tenemos muchas ganas de irlo(s) conociendo</label>
+                                    <textarea class="form-control rounded-4 px-4 py-2 bg-light border-0" id="detalles-perros" name="detalles_perros" rows="2" placeholder="Ej. Toby (Mestizo, Mediano), Luna (Chihuahua, Chica)..." required style="min-height: 50px;"></textarea>
                                 </div>
                             </div>
 
@@ -50,7 +50,7 @@
                                         <input type="text" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Nombre completo" name="nombre" required />
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="tel" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Teléfono" name="telefono" required />
+                                        <input type="tel" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Celular / WhatsApp" name="telefono" required />
                                     </div>
                                     <div class="col-md-6">
                                         <input type="email" class="form-control rounded-pill px-4 py-3 bg-light border-0" placeholder="Correo electrónico" name="correo" required />
@@ -65,7 +65,7 @@
                                     <label class="form-check-label fs-6 fw-semibold ms-2" for="experienciaCompleta" style="color: var(--primary-color); cursor: pointer;">Me interesa recibir información de interés de Bark & Co. Dog Wellness Club.</label>
                                 </div>
                                 <button type="submit" class="btn btn-accent-green btn-lg px-5 py-3 w-100 fs-5 fw-bold shadow-sm">Quiero reservar</button>
-                                <p class="text-center text-muted small mt-3 mb-0">Te contactaremos personalmente en menos de 24 horas para validar la disponibilidad de acuerdo a tus necesidades y coordinar todos los detalles.</p>
+                                <p class="text-center text-muted small mt-3 mb-0">Te contactaremos en menos de 24 horas para validar disponibilidad y coordinar todos los detalles de acuerdo a tus necesidades.</p>
                             </div>
                         </form>
                     </div>
@@ -77,34 +77,73 @@
 
 <script is:inline>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('realBookingForm')
+        const form = document.getElementById('realBookingForm');
+        const inputEntrada = document.getElementById('fecha-entrada');
+        const inputSalida = document.getElementById('fecha-salida');
+
+        // Configuración dinámica de mínimos de fecha para UX
+        if (inputEntrada && inputSalida) {
+            const today = new Date().toISOString().split('T')[0];
+            inputEntrada.min = today;
+
+            inputEntrada.addEventListener('change', function () {
+                if (inputEntrada.value) {
+                    // La fecha de salida debe ser al menos un día después de la entrada
+                    const entryDate = new Date(inputEntrada.value + 'T00:00:00');
+                    entryDate.setDate(entryDate.getDate() + 1);
+                    const minSalida = entryDate.toISOString().split('T')[0];
+                    inputSalida.min = minSalida;
+
+                    // Si la fecha de salida ya seleccionada es menor o igual, la actualizamos
+                    if (inputSalida.value && inputSalida.value < minSalida) {
+                        inputSalida.value = minSalida;
+                    }
+                }
+            });
+        }
 
         if (form) {
             form.addEventListener('submit', async function (e) {
-                e.preventDefault()
+                e.preventDefault();
 
-                const formData = new FormData(form)
-                const data = Object.fromEntries(formData.entries())
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
 
-                // Validación básica de fechas
+                // 1. Validación de Fechas
                 if (!data.fecha_entrada || !data.fecha_salida) {
-                    alert('Por favor, indica las fechas de entrada y salida para apartar tu lugar.')
-                    return
+                    alert('Por favor, indica las fechas de entrada y salida para apartar tu lugar.');
+                    return;
                 }
 
-                if (new Date(data.fecha_salida) < new Date(data.fecha_entrada)) {
-                    alert('La fecha de salida no puede ser anterior a la de entrada.')
-                    return
+                const fechaEntrada = new Date(data.fecha_entrada + 'T00:00:00');
+                const fechaSalida = new Date(data.fecha_salida + 'T00:00:00');
+
+                if (fechaSalida <= fechaEntrada) {
+                    alert('La fecha de salida debe ser mayor a la fecha de entrada.');
+                    return;
                 }
 
-                data.origen = 'https://bark-co-lp.vercel.app/'
+                // 2. Validación de Celular / WhatsApp (Mínimo 10 dígitos)
+                const telefonoLimpio = data.telefono.replace(/\D/g, '');
+                if (telefonoLimpio.length < 10) {
+                    alert('Por favor, ingresa un número de celular o WhatsApp válido de al menos 10 dígitos.');
+                    return;
+                }
 
-                const btn = form.querySelector('button[type="submit"]')
-                const originalText = btn ? btn.textContent : 'Quiero apartar mi lugar'
+                // 3. Validación de Correo Electrónico
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(data.correo)) {
+                    alert('Por favor, ingresa un correo electrónico válido.');
+                    return;
+                }
+
+                data.origen = 'https://bark-co-lp.vercel.app/';
+                const btn = form.querySelector('button[type="submit"]');
+                const originalText = btn ? btn.textContent : 'Quiero apartar mi lugar';
 
                 if (btn) {
-                    btn.textContent = 'Enviando...'
-                    btn.disabled = true
+                    btn.textContent = 'Enviando...';
+                    btn.disabled = true;
                 }
 
                 try {
@@ -115,26 +154,32 @@
                             barkco: 'Huo0lpaw.',
                         },
                         body: JSON.stringify(data),
-                    })
+                    });
 
                     if (response.ok) {
-                        alert('¡Solicitud enviada con éxito! Nos comunicaremos contigo pronto para coordinar los detalles.')
-                        form.reset()
+                        alert('¡Solicitud enviada con éxito! Nos comunicaremos contigo pronto para coordinar los detalles.');
+                        form.reset();
+                        // Restablecer los mínimos de fecha
+                        if (inputEntrada && inputSalida) {
+                            const today = new Date().toISOString().split('T')[0];
+                            inputEntrada.min = today;
+                            inputSalida.min = '';
+                        }
                     } else {
-                        alert('Hubo un error al enviar tu solicitud. Código: ' + response.status)
+                        alert('Hubo un error al enviar tu solicitud. Código: ' + response.status);
                     }
                 } catch (error) {
-                    console.error('Error en fetch:', error)
-                    alert('Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message)
+                    console.error('Error en fetch:', error);
+                    alert('Error de conexión al enviar. Revisa la consola para más detalles: ' + error.message);
                 } finally {
                     if (btn) {
-                        btn.textContent = originalText
-                        btn.disabled = false
+                        btn.textContent = originalText;
+                        btn.disabled = false;
                     }
                 }
-            })
+            });
         }
-    })
+    });
 </script>
 
 <style>
