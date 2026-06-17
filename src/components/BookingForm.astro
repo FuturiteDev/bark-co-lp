@@ -201,7 +201,7 @@
                 }
 
                 try {
-                    const response = await fetch('https://n8n.ongoing.mx/webhook/2dd3eed3-0f4f-41a3-a861-66d2e8265e97', {
+                    const response = await fetch('https://n8n.ongoing.mx/webhook-test/2dd3eed3-0f4f-41a3-a861-66d2e8265e97', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -258,6 +258,16 @@
     .iti {
         width: 100%;
         display: block;
+    }
+    .iti input {
+        width: 100% !important;
+        height: auto !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        padding-right: 1.5rem !important;
+        border: 0 !important;
+        background-color: #F2EBE5 !important;
+        border-radius: 50rem !important;
     }
     .iti__country-list {
         border-radius: 1rem;
