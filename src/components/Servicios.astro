@@ -1,5 +1,6 @@
 ---
-
+import { Picture } from 'astro:assets';
+import perritoMaletaNuevo from '../assets/img/perrito_maleta_nuevo.jpeg';
 ---
 
 <section id="servicios" class="py-5">
@@ -79,7 +80,16 @@
             </div>
             <!-- Right Side: Photo -->
             <div class="col-lg-5 col-md-5 d-flex flex-column">
-                <img src="/assets/img/perro_maleta.webp" alt="Perro feliz descansando en Bark & Co." class="img-fluid rounded-4 shadow w-100 servicios-dog-img" />
+                <Picture
+                    src={perritoMaletaNuevo}
+                    formats={['avif', 'webp']}
+                    fallbackFormat="jpeg"
+                    alt="Perro feliz descansando en Bark & Co."
+                    class="img-fluid rounded-4 shadow w-100 servicios-dog-img"
+                    widths={[300, 600, 900]}
+                    sizes="(max-width: 991px) 100vw, 600px"
+                    loading="lazy"
+                />
             </div>
         </div>
     </div>
