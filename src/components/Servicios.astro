@@ -11,9 +11,9 @@ import perritoMaletaNuevo from '../assets/img/perrito_maleta_nuevo.jpeg';
         </div>
 
         <!-- Tarjeta de Tarifa de Hospedaje en Verde y Foto -->
-        <div class="row align-items-stretch justify-content-between mt-3 g-4" style="padding-bottom: 25px;">
+        <div class="row align-items-stretch mt-3 g-4" style="padding-bottom: 25px;">
             <!-- Left Side: Pricing Card -->
-            <div class="col-lg-5 col-md-5 d-flex flex-column">
+            <div class="col-lg-6 col-md-6 d-flex flex-column">
                 <div class="card h-100 pricing-card">
                     <div class="text-center pt-4 pb-2">
                         <span class="text-muted small fw-bold text-uppercase" style="letter-spacing: 0.1rem;">HOTEL CANINO</span>
@@ -79,12 +79,12 @@ import perritoMaletaNuevo from '../assets/img/perrito_maleta_nuevo.jpeg';
                 </div>
             </div>
             <!-- Right Side: Photo -->
-            <div class="col-lg-5 col-md-5 d-flex flex-column">
+            <div class="col-lg-6 col-md-6 d-flex flex-column">
                 <Picture
                     src={perritoMaletaNuevo}
                     formats={['avif', 'webp']}
                     fallbackFormat="jpeg"
-                    alt="Perro feliz descansando en Bark & Co."
+                    alt="Habitaciones de hospedaje en Bark & Co."
                     class="img-fluid rounded-4 shadow w-100 servicios-dog-img"
                     widths={[300, 600, 900]}
                     sizes="(max-width: 991px) 100vw, 600px"
@@ -189,14 +189,18 @@ import perritoMaletaNuevo from '../assets/img/perrito_maleta_nuevo.jpeg';
         transform: translateY(-2px);
     }
 
-    .servicios-dog-img {
+    /* Asegurar que tanto el contenedor del Picture como la imagen ocupen el 100% alto */
+    .servicios-dog-img,
+    .servicios-dog-img img {
         object-fit: cover;
         aspect-ratio: 1 / 1;
+        width: 100%;
     }
     @media (min-width: 768px) {
-        .servicios-dog-img {
-            height: 100%;
-            aspect-ratio: auto;
+        .servicios-dog-img,
+        .servicios-dog-img img {
+            height: 100% !important;
+            aspect-ratio: auto !important;
         }
     }
 </style>
