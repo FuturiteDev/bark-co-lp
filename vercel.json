@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/reserva",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/reserva/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/reserva/gracias/",
+      "destination": "/gracias/index.html"
+    },
+    {
+      "source": "/reserva/_astro/:path*",
+      "destination": "/_astro/:path*"
+    },
+    {
+      "source": "/reserva/assets/:path*",
+      "destination": "/assets/:path*"
+    }
+  ]
+}
